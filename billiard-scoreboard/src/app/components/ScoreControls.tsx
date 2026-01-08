@@ -1,0 +1,83 @@
+'use client';
+
+import { GameState } from '../types/game';
+
+/* ===============================
+   1️⃣ 기록 저장 함수 (여기에 둔다!)
+   =============================== */
+const saveHistory = (winner: string, score: string) => {
+  const history = JSON.parse(
+    localStorage.getItem('history') || '[]'
+  ); 
+
+  history.push({
+    date: new Date().toLocaleString(),
+    winner,
+    score,
+  });
+
+  localStorage.setItem('history', JSON.stringify(history));
+};
+
+/* ===============================
+   2️⃣ 컴포넌트 시작
+   =============================== */
+export default function ScoreControls({
+  game,
+  setGame,
+}: {
+  game: GameState;
+  setGame: React.Dispatch<React.SetStateAction<GameState | null>>;
+}) {
+
+  /* ===============================
+     3️⃣ 득점 처리
+     =============================== */
+  const score = () => {
+    setGame(prev => {
+      if (!prev) return prev; // ⭐ null 방어 코드
+
+      const players = prev.players.map(p =>
+        p.id === prev.currentPlayerId
+          ? { ...p, score: p.score + 1 }
+          : p
+      );
+
+      const current = players.find(p => p.id === prev.currentPlayerId)!;
+      const other = players.find(p => p.id !== prev.currentPlayerId)!;
+
+      const finished = current.score >= prev.targetScore;
+
+      return {
+        ...prev,
+        players,
+        isFinished: finished,
+      };
+    });
+  };
+
+  /* ===============================
+     4️⃣ 미스 처리
+     =============================== */
+  const miss = () => {
+    setGame(prev => {
+      if (!prev) return prev; // ⭐ null 방어 코드 추가
+
+      return {
+        ...prev,
+        currentPlayerId: prev.currentPlayerId === 1 ? 2 : 1,
+        inning: prev.inning + 1,
+      };
+    });
+  };
+
+  /* ===============================
+     5️⃣ UI
+     =============================== */
+  return (
+    <div>
+      <button onClick={score}>+1 득점</button>
+      <button onClick={miss}>미스</button>
+    </div>
+  );
+}
