@@ -1,26 +1,214 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  color: #0f172a;
+}
+
+/* Layout */
+main {
+  display: block; 
+  text-align: center;
+}
+
+main .table-btn {
+  display: inline-block;
+  margin: 0 60px;
+}
+
+
+/* Head */
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/*PlayerCard*/
+main > div {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+main > div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Active Player (기존 inline border 덮어쓰기) */
+div[style*='3px solid red'] {
+  border: none !important;
+  box-shadow: 0 0 0 3px #2563eb;
+}
+
+/* Player Score */
+p {
+  font-size: 16px;
+  margin: 6px 0;
+}
+
+/* 점수 크게 */
+h3 + p {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+/*Inning Info*/
+main > div:last-of-type {
+  display: flex;
+  justify-content: space-between;
+  background: #f1f5f9;
+  box-shadow: none;
+}
+
+/*Buttons*/
+button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 12px;
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+/* 미스 버튼 */
+button:last-child {
+  background: #64748b;
+  box-shadow: 0 6px 14px rgba(100, 116, 139, 0.25);
+}
+
+button:last-child:hover {
+  background: #475569;
+}
+
+/*Links (Table 선택)*/
+a {
+  display: inline-block;
+  background: white;
+  padding: 18px 24px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: #2563eb;
+  font-weight: 600;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease;
+}
+
+a:hover {
+  transform: translateY(-3px);
+}
+
+/* Inputs & Select (설정 페이지)*/
+input,
+select {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  font-size: 14px;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/*History List*/
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: white;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+
+
+
+/*Game Finish Modal*/
+
+.game-finish-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px 48px;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  animation: pop 0.25s ease;
+}
+
+.modal-card h2 {
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+
+.modal-card p {
+  font-size: 18px;
+  margin-bottom: 24px;
+  color: #16a34a;
+  font-weight: 600;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

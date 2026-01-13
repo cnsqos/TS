@@ -2,9 +2,7 @@
 
 import { GameState } from '../types/game';
 
-/* ===============================
-   1️⃣ 기록 저장 함수 (여기에 둔다!)
-   =============================== */
+/* 기록 저장 함수  */
 const saveHistory = (winner: string, score: string) => {
   const history = JSON.parse(
     localStorage.getItem('history') || '[]'
@@ -19,9 +17,7 @@ const saveHistory = (winner: string, score: string) => {
   localStorage.setItem('history', JSON.stringify(history));
 };
 
-/* ===============================
-   2️⃣ 컴포넌트 시작
-   =============================== */
+/* 시작 */
 export default function ScoreControls({
   game,
   setGame,
@@ -30,12 +26,10 @@ export default function ScoreControls({
   setGame: React.Dispatch<React.SetStateAction<GameState | null>>;
 }) {
 
-  /* ===============================
-     3️⃣ 득점 처리
-     =============================== */
+  /* 득점 처리 */
   const score = () => {
     setGame(prev => {
-      if (!prev) return prev; // ⭐ null 방어 코드
+      if (!prev) return prev; // null 방어 코드
 
       const players = prev.players.map(p =>
         p.id === prev.currentPlayerId
@@ -48,6 +42,8 @@ export default function ScoreControls({
 
       const finished = current.score >= prev.targetScore;
 
+      if (finished){saveHistory(current.name, `${current.score} : ${other.score}`);}
+
       return {
         ...prev,
         players,
@@ -56,12 +52,10 @@ export default function ScoreControls({
     });
   };
 
-  /* ===============================
-     4️⃣ 미스 처리
-     =============================== */
+  /* 미스 처리 */
   const miss = () => {
     setGame(prev => {
-      if (!prev) return prev; // ⭐ null 방어 코드 추가
+      if (!prev) return prev; // null 방어 코드 추가
 
       return {
         ...prev,
@@ -71,9 +65,7 @@ export default function ScoreControls({
     });
   };
 
-  /* ===============================
-     5️⃣ UI
-     =============================== */
+  /* UI */
   return (
     <div>
       <button onClick={score}>+1 득점</button>
@@ -81,3 +73,4 @@ export default function ScoreControls({
     </div>
   );
 }
+

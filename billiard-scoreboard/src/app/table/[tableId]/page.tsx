@@ -46,6 +46,42 @@ export default function TablePage() {
       <InningInfo inning={game.inning} target={game.targetScore} />
 
       <ScoreControls game={game} setGame={setGame} />
+      
+      {/*경기 종료 모달 */}
+
+        {game.isFinished && (
+          <div className="game-finish-modal">
+            <div className="modal-card">
+              <h2>🏆 경기 종료</h2>
+              <p>
+                {
+                  game.players.find(
+                    p => p.score >= game.targetScore
+                  )?.name
+                } 승리!
+              </p>
+              <button
+                onClick={() => {
+                  if (!game) return;
+                  localStorage.removeItem('gameState');
+
+                  setGame({
+                    players: [
+                      { id: 1, name: game.players[0].name, score: 0 },
+                      { id: 2, name: game.players[1].name, score: 0 },
+                    ],
+                    currentPlayerId: 1,
+                    inning: 1,
+                    targetScore: game.targetScore,
+                    isFinished: false,
+                  });
+                }}
+              >
+                새 경기
+              </button>
+            </div>
+          </div>
+        )}
     </main>
   );
 }
