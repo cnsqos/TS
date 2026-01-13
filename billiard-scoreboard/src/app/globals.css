@@ -21,7 +21,7 @@ main {
   text-align: center;
 }
 
-/* Headings */
+/* 헤드 */
 h1 {
   font-size: 28px;
   font-weight: 700;
@@ -40,7 +40,7 @@ h3 {
   margin-bottom: 8px;
 }
 
-/* Player Cards */
+/* 플레이어 카드 */
 .player-row {
   display: flex;
   gap: 20px;
@@ -76,7 +76,7 @@ h3 {
   margin: 6px 0;
 }
 
-/* Inning Info */
+/* 이닝 인포 */
 .inning-info {
   display: flex;
   justify-content: space-between;
@@ -87,7 +87,7 @@ h3 {
   margin-bottom: 20px;
 }
 
-/* Score Controls */
+/* 스코어 컨트롤 */
 .score-controls-row {
   display: flex;
   gap: 10px;
@@ -125,12 +125,13 @@ button.miss:hover {
   background: #475569;
 }
 
-/* Table Selection Home */
+/* 테이블 */
 .table-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 x 3 */
+  gap: 32px;
+  justify-items: center;
+  max-width: 420px; 
 }
 
 .table-btn {
@@ -143,6 +144,9 @@ button.miss:hover {
   font-weight: 600;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
   transition: transform 0.2s ease;
+  width: 100%;
+  text-align: center;
+  padding: 24px 15;
 }
 
 .table-btn:hover {
@@ -239,5 +243,10 @@ li {
 
   .inning-info {
     width: 90%;
+  }
+
+  .table-buttons {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 300px;
   }
 }
