@@ -8,7 +8,7 @@ export default function PlayerCard({
   active: boolean;
 }) {
   return (
-    <div style={{ border: active ? '3px solid red' : '1px solid gray' }}>
+    <div className={`player-card ${active ? 'active' : ''}`}>
       <h3>{player.name}</h3>
       <p>{player.score}</p>
     </div>

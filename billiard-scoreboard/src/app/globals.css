@@ -10,24 +10,22 @@ body {
   color: #0f172a;
 }
 
-/* Layout */
+/* 중앙 정렬 */
 main {
-  display: block; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  min-height: 100vh;
   text-align: center;
 }
 
-main .table-btn {
-  display: inline-block;
-  margin: 0 60px;
-}
-
-
-/* Head */
+/* Headings */
 h1 {
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 32px;
-  text-align: center;
 }
 
 h2 {
@@ -42,59 +40,70 @@ h3 {
   margin-bottom: 8px;
 }
 
-/*PlayerCard*/
-main > div {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 20px;
+/* Player Cards */
+.player-row {
+  display: flex;
+  gap: 20px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.player-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  width: 150px;
+  text-align: center;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-main > div:hover {
+.player-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* Active Player (기존 inline border 덮어쓰기) */
-div[style*='3px solid red'] {
-  border: none !important;
+.player-card.active {
+  border: none;
   box-shadow: 0 0 0 3px #2563eb;
 }
 
-/* Player Score */
-p {
-  font-size: 16px;
-  margin: 6px 0;
-}
-
-/* 점수 크게 */
-h3 + p {
+.player-card p {
   font-size: 32px;
   font-weight: 700;
   color: #2563eb;
+  margin: 6px 0;
 }
 
-/*Inning Info*/
-main > div:last-of-type {
+/* Inning Info */
+.inning-info {
   display: flex;
   justify-content: space-between;
   background: #f1f5f9;
-  box-shadow: none;
+  border-radius: 16px;
+  width: 320px;
+  padding: 10px 20px;
+  margin-bottom: 20px;
 }
 
-/*Buttons*/
+/* Score Controls */
+.score-controls-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
 button {
   background: #2563eb;
   color: white;
   border: none;
   border-radius: 12px;
-  padding: 14px 20px;
+  padding: 12px 20px;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  margin-right: 12px;
   box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
   transition: background 0.2s ease, transform 0.1s ease;
 }
@@ -107,18 +116,24 @@ button:active {
   transform: scale(0.97);
 }
 
-/* 미스 버튼 */
-button:last-child {
+button.miss {
   background: #64748b;
   box-shadow: 0 6px 14px rgba(100, 116, 139, 0.25);
 }
 
-button:last-child:hover {
+button.miss:hover {
   background: #475569;
 }
 
-/*Links (Table 선택)*/
-a {
+/* Table Selection Home */
+.table-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.table-btn {
   display: inline-block;
   background: white;
   padding: 18px 24px;
@@ -130,11 +145,11 @@ a {
   transition: transform 0.2s ease;
 }
 
-a:hover {
+.table-btn:hover {
   transform: translateY(-3px);
 }
 
-/* Inputs & Select (설정 페이지)*/
+/* Inputs & Select */
 input,
 select {
   width: 100%;
@@ -152,10 +167,12 @@ select:focus {
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
 }
 
-/*History List*/
+/* History List */
 ul {
   list-style: none;
   padding: 0;
+  width: 100%;
+  max-width: 400px;
 }
 
 li {
@@ -166,11 +183,7 @@ li {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
 }
 
-
-
-
-/*Game Finish Modal*/
-
+/* Game Finish Modal */
 .game-finish-modal {
   position: fixed;
   inset: 0;
@@ -210,5 +223,21 @@ li {
   to {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+/* 모바일 대응 */
+@media (max-width: 500px) {
+  .player-row, .table-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .player-card, .table-btn {
+    width: 80%;
+  }
+
+  .inning-info {
+    width: 90%;
   }
 }

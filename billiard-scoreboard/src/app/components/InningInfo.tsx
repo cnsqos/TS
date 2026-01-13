@@ -6,7 +6,7 @@ export default function InningInfo({
   target: number;
 }) {
   return (
-    <div>
+    <div className="inning-info">
       <p>Inning: {inning}</p>
       <p>Target: {target}</p>
     </div>
