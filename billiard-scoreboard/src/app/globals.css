@@ -129,7 +129,7 @@ button.miss:hover {
 .table-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 30px;
   justify-content: center;
 }
 
