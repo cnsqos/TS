@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { GameState, Player } from '@/app/types/game';
+import { GameState } from '@/app/types/game';
 import PlayerCard from '@/app/components/PlayerCard';
 import ScoreControls from '@/app/components/ScoreControls';
 import InningInfo from '@/app/components/InningInfo';
@@ -33,17 +33,23 @@ export default function TablePage() {
 
   if (!game) return <p>게임 로딩중...</p>;
 
-  /* 플레이어 점수 +1 기능 */
+  /* ✅ 플레이어 점수 +1 (현재 턴만 가능) */
   const addPoint = (playerId: number) => {
     setGame(prev => {
       if (!prev) return prev;
+
+      // 🔒 현재 턴이 아니면 무시
+      if (playerId !== prev.currentPlayerId) return prev;
+
       const players = prev.players.map(p =>
         p.id === playerId ? { ...p, score: p.score + 1 } : p
       );
+
       // 승리 체크
       const current = players.find(p => p.id === playerId)!;
       const other = players.find(p => p.id !== playerId)!;
       const finished = current.score >= prev.targetScore;
+
       if (finished) {
         const history = JSON.parse(localStorage.getItem('history') || '[]');
         history.push({
@@ -53,34 +59,49 @@ export default function TablePage() {
         });
         localStorage.setItem('history', JSON.stringify(history));
       }
+
       return { ...prev, players, isFinished: finished };
     });
   };
 
   return (
-    <main className="table-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
-      {/* 플레이어 카드 가로 배치 */}
+    <main
+      className="table-container"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '20px',
+      }}
+    >
+      {/* 플레이어 카드 */}
       <div className="player-row" style={{ display: 'flex', gap: '20px' }}>
-        {game.players.map(player => (
-          <div
-            key={player.id}
-            onClick={() => addPoint(player.id)}
-            style={{ cursor: 'pointer' }}
-          >
-            <PlayerCard
-              player={player}
-              active={player.id === game.currentPlayerId}
-            />
-          </div>
-        ))}
+        {game.players.map(player => {
+          const isActiveTurn = player.id === game.currentPlayerId;
+
+          return (
+            <div
+              key={player.id}
+              onClick={() => {
+                if (isActiveTurn) addPoint(player.id);
+              }}
+              style={{
+                cursor: isActiveTurn ? 'pointer' : 'not-allowed',
+                opacity: isActiveTurn ? 1 : 0.4,
+              }}
+            >
+              <PlayerCard
+                player={player}
+                active={isActiveTurn}
+              />
+            </div>
+          );
+        })}
       </div>
 
       <InningInfo inning={game.inning} target={game.targetScore} />
 
-      {/* 득점/미스 버튼 가로 배치 */}
-      <div className="score-controls-row">
-        <ScoreControls game={game} setGame={setGame} />
-      </div>
+      <ScoreControls game={game} setGame={setGame} />
 
       {/* 경기 종료 모달 */}
       {game.isFinished && (
@@ -92,7 +113,6 @@ export default function TablePage() {
             </p>
             <button
               onClick={() => {
-                if (!game) return;
                 localStorage.removeItem('gameState');
                 setGame({
                   players: [
